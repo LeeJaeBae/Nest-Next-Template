@@ -1,5 +1,6 @@
-import { Controller, Get, Render } from '@nestjs/common';
+import { Body, Controller, Get, Post, Render } from '@nestjs/common';
 import { AppService } from './app.service';
+import { StudentDto } from './student.dto';
 
 @Controller()
 export class AppController {
@@ -8,6 +9,11 @@ export class AppController {
   @Render('Home')
   @Get()
   getHome() {
-    return this.appService.getHome('test');
+    return this.appService.getAllStudent();
+  }
+
+  @Post()
+  createOne(@Body() data: StudentDto) {
+    return this.appService.createStudent(data);
   }
 }
