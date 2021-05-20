@@ -1,4 +1,4 @@
-import { Injectable, Param } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Group } from './group';
 import { Student } from './student';
 
@@ -10,10 +10,6 @@ export class AppService {
   groupCount = 0;
   groups: Group[] = [];
   history: any[] = [];
-
-  getHome(@Param('title') title?: string) {
-    return { title };
-  }
 
   getAllStudent() {
     return { data: this.data };
@@ -39,5 +35,10 @@ export class AppService {
   insertLoveStudents(data: StudentDto) {
     const one = this.findOne(data);
     one?.setLoveStudent({ ...data });
+  }
+
+  insertHateStudents(data: StudentDto) {
+    const one = this.findOne(data);
+    one?.setHateStudent({ ...data });
   }
 }

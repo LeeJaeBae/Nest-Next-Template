@@ -2,16 +2,16 @@ import axios from 'axios';
 import { NextPage } from 'next';
 import { useRouter } from 'next/dist/client/router';
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
+
 // import Head from 'next/head';
 import { Student } from '../../src/student';
 
-type LoveProps = {
+type HateProps = {
   data: Student[] | [];
   name: string;
 };
 
-const Love: NextPage<LoveProps> = ({ data, name }) => {
+const Hate: NextPage<HateProps> = ({ data, name }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const first = useRef<HTMLInputElement>(null);
   const second = useRef<HTMLInputElement>(null);
@@ -26,14 +26,14 @@ const Love: NextPage<LoveProps> = ({ data, name }) => {
     if (name !== '') {
       setLoading(true);
       axios
-        .post('/love', {
+        .post('/hate', {
           name: name,
           first: first.current?.value,
           second: second.current?.value,
           third: third.current?.value,
         })
         .then((v) => {
-          router.push(`/hate?name=${name}`);
+          router.push('/');
         });
     }
   };
@@ -71,10 +71,10 @@ const Love: NextPage<LoveProps> = ({ data, name }) => {
   );
 };
 
-Love.getInitialProps = (ctx): LoveProps => {
+Hate.getInitialProps = (ctx): HateProps => {
   const { data, name } = ctx.query;
 
-  return { data, name } as LoveProps;
+  return { data, name } as HateProps;
 };
 
-export default Love;
+export default Hate;

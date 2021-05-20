@@ -1,22 +1,23 @@
 import axios from 'axios';
 import { NextPage } from 'next';
+import { useRouter } from 'next/dist/client/router';
 import React, { MouseEventHandler, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 // import Head from 'next/head';
 import { Student } from '../../src/student';
 
-type Props = {
+type HomeProps = {
   data: Student[] | [];
 };
 
-const Home: NextPage<Props> = ({ data }) => {
+const Home: NextPage<HomeProps> = ({ data }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const name = useRef<HTMLInputElement>(null);
+  const router = useRouter();
   const handleClick: MouseEventHandler = (e) => {
     if (name.current?.value !== '') {
       setLoading(true);
       axios.post('/', { name: name.current?.value }).then((v) => {
-        window.location.reload();
+        router.push(`/love?name=${name.current?.value}`);
       });
     }
   };
@@ -25,17 +26,22 @@ const Home: NextPage<Props> = ({ data }) => {
     console.log(data);
   }, [data]);
   return (
-    <Container>
-      <InputContainer>
+    <div className="container">
+      <div className="input-container">
         <div>
-          <Input type="text" name="name" ref={name} />
+          <input className="input" type="text" name="name" ref={name} />
         </div>
         <div>
-          <Input type="button" value="button" onClick={handleClick} />
+          <input
+            className="input"
+            type="button"
+            value="button"
+            onClick={handleClick}
+          />
         </div>
-      </InputContainer>
+      </div>
       {!loading &&
-        data.map((v) => {
+        data.map((v: any) => {
           return (
             <div key={v.name}>
               {v.name}
@@ -43,38 +49,13 @@ const Home: NextPage<Props> = ({ data }) => {
             </div>
           );
         })}
-    </Container>
+    </div>
   );
 };
 
-Home.getInitialProps = (ctx): Props => {
+Home.getInitialProps = (ctx): HomeProps => {
   const { data } = ctx.query;
-  return { data } as Props;
+  return { data } as HomeProps;
 };
 
 export default Home;
-
-const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  text-align: center;
-  align-items: center;
-  position: relative;
-`;
-
-const Input = styled.input`
-  height: 2rem;
-  width: 10rem;
-  border-radius: 1rem;
-  position: relative;
-`;
-
-const InputContainer = styled.div`
-  width: 12rem;
-  height: 6rem;
-  position: relative;
-  left: calc(50% - 6rem);
-  ::last-child {
-    background-color: #00ff00;
-  }
-`;

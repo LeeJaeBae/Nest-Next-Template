@@ -1,0 +1,21 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  align-items: center;
+  position: relative;
+}
+
+.input {
+  height: 2rem;
+  width: 10rem;
+  border-radius: 1rem;
+  position: relative;
+}
+
+.input-container {
+  width: 12rem;
+  height: 6rem;
+  position: relative;
+  left: calc(50% - 6rem);
+}
